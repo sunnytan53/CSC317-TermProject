@@ -10,18 +10,17 @@ Please follow the instructions below and fill in the information requested when 
 
 |               | Information   |
 |:-------------:|:-------------:|
-| Student Name  | name-here     |
-| Student ID    | id-here       |
-| Student Email | email-here    |
+| Student Name  | Haoyuan Tan |
+| Student ID    | 918274583 |
+| Student Email | htan6@mail.sfsu.edu |
 
 
 
 # Build/Run Instructions
 
 ## Build Instructions
-1. steps here
-2. steps here
+1. cd csc317-termproject-CiYuan53/application
+2. npm install
 
 ## Run Instructions
-1. steps here
-2. steps here 
+1. npm start
