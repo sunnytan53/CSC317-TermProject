@@ -1,36 +1,24 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="public/css/form.css">
-    <script defer type="text/javascript" src="public/js/registration.js"></script>
-    <title>Registration</title>
-</head>
-<body>
-    <div class="page-grid reg">
-        <header>
-            <h1>Registration Form</h1>
-            <h3>For guests to register accounts</h3>
-        </header>
-        <form>
-            <div class="form-intro">Please input required information and click REGISTER:</div>
-            <label for="username">Username: </label>
-            <input id="username" type="text" class="input-text" />
-            <label for="email">Email: </label>
-            <input id="email" type="text" class="input-text" />
-            <label for="password">Password: </label>
-            <input id="password" type="text" class="input-text" />
-            <label for="cPassword">Comfirm your Password: </label>
-            <input id="cPassword" type="text" class="input-text" />
-            <label for="accept1">Check to confirm that you are <strong>13+</strong></label>
-            <input type="checkbox" name="accept1" required />
-            <label for="accept2">Check to accept <a href="TOS and privacy rules">TOS and privacy rules</a></label>
-            <input type="checkbox" name="accept2" required />
-            <button type="reset">RESET</button>
-            <button id="button-reg" type="submit" disabled >REGISTER</button>
-        </form>
-        <form id="regFormat"></form>
-    </div>
-</body>
-</html>
+﻿<div class="page-grid reg">
+    <header>
+        <h1>Registration Form</h1>
+        <h3>For guests to register accounts</h3>
+    </header>
+    <form>
+        <div class="form-intro">Please input required information and click REGISTER:</div>
+        <label for="username">Username: </label>
+        <input id="username" type="text" class="input-text" />
+        <label for="email">Email: </label>
+        <input id="email" type="text" class="input-text" />
+        <label for="password">Password: </label>
+        <input id="password" type="text" class="input-text" />
+        <label for="cPassword">Comfirm your Password: </label>
+        <input id="cPassword" type="text" class="input-text" />
+        <label for="accept1">Check to confirm that you are <strong>13+</strong></label>
+        <input type="checkbox" name="accept1" required />
+        <label for="accept2">Check to accept <a href="TOS and privacy rules">TOS and privacy rules</a></label>
+        <input type="checkbox" name="accept2" required />
+        <button type="reset">RESET</button>
+        <button id="button-reg" type="submit" disabled>REGISTER</button>
+    </form>
+    <form id="regFormat"></form>
+</div>
