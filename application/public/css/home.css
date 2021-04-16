@@ -1,0 +1,21 @@
+#post {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    max-width: 1500px;
+}
+
+.photo {
+    display: grid;
+    grid-template-rows: 1fr 5fr;
+    grid-template-columns: 1fr;
+    border: dashed black;
+    margin: 0.25em;
+    padding: 1em;
+    width: min-content;
+}
+
+div {
+    font-weight: bold;
+    text-align: center;
+}

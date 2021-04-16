@@ -1,0 +1,164 @@
+.page-grid {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 10fr;
+    background-color: #333333;
+    grid-template-areas:
+        "header"
+        "content";
+    padding: 1em;
+    grid-gap: 1em;
+    min-width: 350px;
+    max-width: 800px;
+}
+
+.reg {
+    grid-template-areas:
+        "header header"
+        "content regFormat";
+    grid-template-columns: 7fr 3fr;
+}
+
+header {
+    grid-area: header;
+    text-align: center;
+    font-family: cursive;
+    border: solid white;
+}
+
+h1 {
+    color: lightgray;
+    text-shadow: .2em .1em .1em gray;
+}
+
+h3 {
+    color: thistle;
+}
+
+form, section {
+    grid-area: content;
+    display: grid;
+    grid-auto-columns: .5fr;
+    grid-auto-columns: 5fr;
+    padding: .5em;
+    grid-gap: .3em;
+    border: dashed white;
+}
+
+#regFormat {
+    grid-area: regFormat;
+    color: white;
+    align-content: space-evenly;
+}
+
+.checkYes {
+    color: green;
+    font-weight: bold;
+}
+
+    .checkYes:before {
+        content: '\2714   ';
+    }
+
+.checkNo {
+    color: red;
+    font-weight: bold;
+}
+
+    .checkNo:before {
+        content: '\2718   ';
+    }
+
+.form-intro {
+    grid-area: 1 / 1 / 2 / 3;
+    color: lightcoral;
+    font-weight: bold;
+}
+
+.post {
+    border: double white;
+    color: lightcoral;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+.title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+    color: deeppink;
+}
+
+img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+[for] {
+    color: white;
+    grid-column: 1;
+    text-align: end;
+}
+
+input {
+    grid-column: 2;
+}
+
+    input:hover {
+        background-color: lightgreen;
+    }
+
+button {
+    font-size: 1.5em;
+    font-weight: 900;
+}
+
+[type=submit] {
+    background-color: deepskyblue;
+}
+
+    [type=submit]:hover {
+        background-color: midnightblue;
+    }
+
+[type=reset] {
+    background-color: red;
+    grid-column: 1;
+}
+
+    [type=reset]:hover {
+        background-color: darkred;
+    }
+
+@media screen and (max-width: 500px) {
+    .page-grid {
+        grid-template-rows: .5fr;
+        padding: .5em;
+        grid-gap: .5em;
+    }
+
+    form {
+        grid-auto-rows: .2fr;
+        padding: .1em;
+        border: hidden;
+    }
+
+    .form-intro {
+        grid-area: 1 / 1 / 2 / 2;
+    }
+
+    [for] {
+        text-align: center;
+    }
+
+    input {
+        grid-column: 1;
+    }
+
+    [type=file], [type=checkbox] {
+        margin-left: auto;
+        margin-right: auto;
+        height: min-content;
+    }
+}
