@@ -8,6 +8,10 @@
     <title>{{title}}</title>
 </head>
 <body>
-    {{{body}}}
+    <div class="page-grid {{pageclass}}">
+        {{> nav}}
+        {{> header}}
+        {{{body}}}
+    </div>
 </body>
 </html>

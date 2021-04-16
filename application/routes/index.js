@@ -4,26 +4,45 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('home',
-        { title: "Home"});
+        {
+            title: "Home",
+            script: "home.js",
+            description: "To be added soon, please check out other pages."
+        });
 });
 
 router.get('/login', (req, res, next) => {
     res.render('login',
-        { title: "Login" });
+        {
+            title: "Login",
+            description: "For users to log in"
+        });
 });
 
 router.get('/registration', (req, res, next) => {
     res.render('registration',
-        { title: "Registration", script: "registration.js" });
+        {
+            title: "Registration",
+            script: "registration.js",
+            pageclass: "reg",
+            description: "For guests to register accounts"
+        });
 });
 
 router.get('/postimage', (req, res, next) => {
     res.render('postimage',
-        { title: "Post image" });
+        {
+            title: "Post image",
+            description: "For registered users to post images"
+        });
 });
 
 router.get('/Imagepost', (req, res, next) => {
-    res.render('Imagepost');
+    res.render('Imagepost',
+        {
+            title: "Image Post",
+            description: "For viewing an individual image post"
+        });
 });
 
 module.exports = router;

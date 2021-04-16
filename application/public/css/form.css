@@ -1,22 +1,13 @@
 .page-grid {
     display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 10fr;
     background-color: #333333;
     grid-template-areas:
+        "nav"
         "header"
         "content";
     padding: 1em;
     grid-gap: 1em;
-    min-width: 350px;
-    max-width: 800px;
-}
-
-.reg {
-    grid-template-areas:
-        "header header"
-        "content regFormat";
-    grid-template-columns: 7fr 3fr;
+    font-size: 1.5em;
 }
 
 header {
@@ -24,6 +15,7 @@ header {
     text-align: center;
     font-family: cursive;
     border: solid white;
+    grid-template-rows: 3fr 1fr;
 }
 
 h1 {
@@ -38,11 +30,31 @@ h3 {
 form, section {
     grid-area: content;
     display: grid;
-    grid-auto-columns: .5fr;
-    grid-auto-columns: 5fr;
     padding: .5em;
     grid-gap: .3em;
     border: dashed white;
+}
+
+.reg {
+    grid-template-areas:
+        "nav nav"
+        "header header"
+        "content regFormat";
+    grid-template-columns: 7fr 3fr;
+}
+
+.nav {
+    grid-area: nav;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 2em;
+}
+
+.nav>a {
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    border: solid;
 }
 
 #regFormat {
@@ -77,22 +89,38 @@ form, section {
 
 .post {
     border: double white;
-    color: lightcoral;
+    color: white;
     padding-left: 2em;
     padding-right: 2em;
 }
 
 .title {
+    color: lightcoral;
     text-align: center;
     font-weight: bold;
     font-size: 2em;
-    color: deeppink;
 }
 
 img {
     margin-left: auto;
     margin-right: auto;
     width: 80%;
+}
+
+#post {
+    display: grid;
+    grid-template-columns: repeat(4, 2fr);
+    grid-auto-rows: 1fr;
+    color: white;
+}
+
+.photo {
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    grid-template-columns: 1fr;
+    margin: 0.25em;
+    padding: 1em;
+    align-items: center;
 }
 
 [for] {
