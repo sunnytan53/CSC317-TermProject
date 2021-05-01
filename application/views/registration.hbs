@@ -1,17 +1,24 @@
-﻿<form>
+﻿<form method="post" action="/users/register" enctype="application/x-www-form-urlencoded">
     <div class="form-intro">Please input required information and click REGISTER:</div>
+    
     <label for="username">Username: </label>
-    <input id="username" type="text" class="input-text" />
+    <input id="username" name="username" type="text" class="input-text" required/>
+    
     <label for="email">Email: </label>
-    <input id="email" type="text" class="input-text" />
+    <input id="email" name="email" type="text" class="input-text" required/>
+    
     <label for="password">Password: </label>
-    <input id="password" type="text" class="input-text" />
+    <input id="password" name="password" type="text" class="input-text" required/>
+    
     <label for="cPassword">Comfirm your Password: </label>
-    <input id="cPassword" type="text" class="input-text" />
+    <input id="cPassword" name="cPassword" type="text" class="input-text" required/>
+    
     <label for="accept1">Check to confirm that you are <strong>13+</strong></label>
-    <input type="checkbox" name="accept1" required />
+    <input type="checkbox" required />
+    
     <label for="accept2">Check to accept <a href="TOS and privacy rules">TOS and privacy rules</a></label>
-    <input type="checkbox" name="accept2" required />
+    <input type="checkbox" required />
+    
     <button type="reset">RESET</button>
     <button id="button-reg" type="submit" disabled>REGISTER</button>
 </form>

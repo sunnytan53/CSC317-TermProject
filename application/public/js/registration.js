@@ -9,7 +9,7 @@ let formatNode = document.getElementById("regFormat"), regButton = document.getE
             oldID = currentID;
         }
         updateFormat(element.target.value);
-    })
+    })          
     input.oninput = ((element) => {
         updateFormat(element.target.value);
     })

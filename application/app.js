@@ -6,6 +6,7 @@ var handlebars = require('express-handlebars');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var dbRouter = require('./routes/dbtest');
 
 var errorPrint = require('./helpers/debug/debugprinters').errorPrint;
 var requestPrint = require('./helpers/debug/debugprinters').requestPrint;
@@ -37,10 +38,14 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/dbtest', dbRouter);
+app.use((err, req, res, next) => {
+    res.status(500);
+    res.send('something went wrong with the database')
+})
 app.use((err, req, res, next) => {
     errorPrint(err);
-    res.render('error', {err_message: err})
+    res.render('error', { err_message: err })
 })
 
 module.exports = app;

@@ -9,7 +9,7 @@ class UserError extends Error {
         return this.message;
     }
 
-    redRrectURL() {
+    getRedirectURL() {
         return this.redirectURL;
     }
 
