@@ -96,6 +96,7 @@ router.post('/login', (req, res, next) => {
                     successPrint(`User ${username} is logged in`);
                     req.session.username = username;
                     req.session.userId = userId;
+                    res.locals.logged = true;
                     res.redirect('/');
                 } else {
                     throw new UserError("User error: Unmatched password!", "/login", 200)
