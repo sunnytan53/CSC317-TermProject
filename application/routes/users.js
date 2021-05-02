@@ -4,10 +4,6 @@ var db = require('../config/database');
 var { successPrint, errorPrint } = require('../helpers/debug/debugprinters');
 var UserError = require('../helpers/error/UserError');
 var bcrypt = require('bcrypt');
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
-});
 
 router.post('/register', (req, res, next) => {
     let username = req.body.username;
@@ -45,6 +41,7 @@ router.post('/register', (req, res, next) => {
             })
             .then(([results, fields]) => {
                 if (results && results.affectedRows) {
+                    req.flash('success', 'User Account was created!');
                     successPrint("User was created!!!")
                     res.redirect('/login');
                 } else {
@@ -54,6 +51,7 @@ router.post('/register', (req, res, next) => {
             .catch((err) => {
                 errorPrint("Registraction failed:");
                 if (err instanceof UserError) {
+                    req.flash('error', err.getMessage());
                     errorPrint(err.getMessage());
                     res.status(err.getStatus());
                     res.redirect(err.getRedirectURL());
@@ -63,6 +61,7 @@ router.post('/register', (req, res, next) => {
             })
     }
     else {
+        req.flash('error', 'User Error: the enetered information is NOT valid!\nPlease follow the instruction to enter valid information!');
         errorPrint("User Error: the enetered information is NOT valid!\nPlease follow the instruction to enter valid information!");
         res.status(200);
         res.redirect("/registration");
@@ -93,6 +92,7 @@ router.post('/login', (req, res, next) => {
             })
             .then((matched) => {
                 if (matched) {
+                    req.flash('success', 'You are now LOGGED IN!');
                     successPrint(`User ${username} is logged in`);
                     req.session.username = username;
                     req.session.userId = userId;
@@ -104,6 +104,7 @@ router.post('/login', (req, res, next) => {
             .catch((err) => {
                 errorPrint("User login failed:");
                 if (err instanceof UserError) {
+                    req.flash('error', err.getMessage());
                     errorPrint(err.getMessage());
                     res.status(err.getStatus());
                     res.redirect(err.getRedirectURL());
@@ -112,6 +113,7 @@ router.post('/login', (req, res, next) => {
                 }
             })
     } else {
+        req.flash('error', 'User Error: the enetered information is NOT valid!');
         errorPrint("User Error: the enetered information is NOT valid!");
         res.status(200);
         res.redirect("/login");
@@ -119,16 +121,16 @@ router.post('/login', (req, res, next) => {
 })
 
 router.post('/logout', (req, res, next) => {
-    req.session.destroy(((err) => {
+    req.session.destroy((err) => {
         if (err) {
             errorPrint("Session could NOT be destroyed");
             next(err);
         } else {
             successPrint("Session was destroyed");
             res.clearCookie("csid");
-            res.json({status: "OK", message: "usre is logged out"});
+            res.json({ status: "OK", message: "user is logged out" });
         }
-    }));
+    });
 });
 
 module.exports = router;

@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="public/css/form.css">
+    <script defer type="text/javascript" src="public/js/home.js"></script>
     <script defer type="text/javascript" src="public/js/{{script}}"></script>
     <title>{{title}}</title>
 </head>
@@ -11,7 +12,26 @@
     <div class="page-grid {{pageclass}}">
         {{> nav}}
         {{> header}}
+        {{#if (emptyObject messages)}}
+        {{> flashmessage}}
+        {{/if}}
         {{{body}}}
     </div>
+
+    {{#if logged}}
+    <script>
+        let ele = document.getElementById('logout');
+        if (ele) {
+            ele.onclick = (even) => {
+                fetch('/users/logout', {
+                    method: "post"
+                })
+                    .then((data) => {
+                        location.replace('/');
+                    })
+            }
+        }
+    </script>
+    {{/if}}
 </body>
 </html>

@@ -5,6 +5,7 @@ var logger = require('morgan');
 var handlebars = require('express-handlebars');
 var sessions = require('express-session');
 var mysqlSession = require('express-mysql-session')(sessions);
+var flash = require('express-flash');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -22,7 +23,11 @@ app.engine(
         partialsDir: path.join(__dirname, "views/partials"),
         extname: ".hbs",
         defaultLayout: "home",
-        helpers: {}
+        helpers: {
+            emptyObject: (obj) => {
+                return !(obj.constructor === Object && Object.keys(obj).length == 0);
+            }
+        }
     })
 );
 
@@ -34,6 +39,8 @@ app.use(sessions({
     resave: false,
     saveUninitialized: false
 }));
+
+app.use(flash());
 
 app.set("view engine", "hbs");
 app.use(logger('dev'));
