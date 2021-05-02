@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../config/database');
 var { successPrint, errorPrint } = require('../helpers/debug/debugprinters');
 var UserError = require('../helpers/error/UserError');
+var bcrypt = require('bcrypt');
 /* GET users listing. */
 router.get('/', function (req, res, next) {
     res.send('respond with a resource');
@@ -34,11 +35,13 @@ router.post('/register', (req, res, next) => {
             })
             .then(([results, fields]) => {
                 if (results && results.length == 0) {
-                    let baseSQL = "insert into users (username, email, password, created) values (?,?,?,now());";
-                    return db.execute(baseSQL, [username, email, password]);
+                    return bcrypt.hash(password, 5);
                 } else {
                     throw new UserError("User Error: registration failed, email already exists", "/registration", 200);
                 }
+            })
+            .then((hPassword) => {
+                return db.execute("insert into users (username, email, password, created) values (?,?,?,now())", [username, email, hPassword]);
             })
             .then(([results, fields]) => {
                 if (results && results.affectedRows) {
@@ -49,7 +52,7 @@ router.post('/register', (req, res, next) => {
                 }
             })
             .catch((err) => {
-                errorPrint("User could NOT be created for some reason!");
+                errorPrint("Registraction failed:");
                 if (err instanceof UserError) {
                     errorPrint(err.getMessage());
                     res.status(err.getStatus());
@@ -65,5 +68,67 @@ router.post('/register', (req, res, next) => {
         res.redirect("/registration");
     }
 })
+
+router.post('/login', (req, res, next) => {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    if (/[a-zA-Z]/.test(username.charAt(0))
+        && username.replace(/[^a-zA-Z0-9]/).length >= 3
+        && password.length >= 8
+        && /[A-Z]/.test(password)
+        && /[0-9]/.test(password)
+        && /[^\w]/.test(password)
+        && password.length != 0) {
+        // Validate the input again to make sure everything works fine
+        let userId;
+        db.execute("select id, username, password from users where username=?", [username])
+            .then(([results, fields]) => {
+                if (results && results.length == 1) {
+                    userId = results[0].id;
+                    return bcrypt.compare(password, results[0].password);
+                } else {
+                    throw new UserError("User error: Unmatched username!", "/login", 200)
+                }
+            })
+            .then((matched) => {
+                if (matched) {
+                    successPrint(`User ${username} is logged in`);
+                    req.session.username = username;
+                    req.session.userId = userId;
+                    res.redirect('/');
+                } else {
+                    throw new UserError("User error: Unmatched password!", "/login", 200)
+                }
+            })
+            .catch((err) => {
+                errorPrint("User login failed:");
+                if (err instanceof UserError) {
+                    errorPrint(err.getMessage());
+                    res.status(err.getStatus());
+                    res.redirect(err.getRedirectURL());
+                } else {
+                    next(err);
+                }
+            })
+    } else {
+        errorPrint("User Error: the enetered information is NOT valid!");
+        res.status(200);
+        res.redirect("/login");
+    }
+})
+
+router.post('/logout', (req, res, next) => {
+    req.session.destroy(((err) => {
+        if (err) {
+            errorPrint("Session could NOT be destroyed");
+            next(err);
+        } else {
+            successPrint("Session was destroyed");
+            res.clearCookie("csid");
+            res.json({status: "OK", message: "usre is logged out"});
+        }
+    }));
+});
 
 module.exports = router;
