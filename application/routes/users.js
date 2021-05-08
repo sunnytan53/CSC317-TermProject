@@ -37,15 +37,16 @@ router.post('/register', (req, res, next) => {
                 }
             })
             .then((hPassword) => {
-                return db.execute("insert into users (username, email, password, created) values (?,?,?,now())", [username, email, hPassword]);
+                return db.execute("insert into users (username, email, password, created) values (?,?,?,now())",
+                    [username, email, hPassword]);
             })
             .then(([results, fields]) => {
                 if (results && results.affectedRows) {
-                    req.flash('success', 'User Account was created!');
+                    req.flash('success', 'User Account was created successfully!!!');
                     successPrint("User was created!!!")
                     res.redirect('/login');
                 } else {
-                    throw new UserError("Server Error: user could not be created", "/registration", 500);
+                    throw new UserError("Server Error: user could NOT be created", "/registration", 500);
                 }
             })
             .catch((err) => {

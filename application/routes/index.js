@@ -37,8 +37,8 @@ router.get('/Imagepost', (req, res, next) => {
         });
 });
 
-router.get('/postimage', isLoggedIn, (req, res, next) => {
-    res.render('postimage',
+router.get('/postImage', isLoggedIn, (req, res, next) => {
+    res.render('postImage',
         {
             title: "Post image",
             description: "For registered users to post images"

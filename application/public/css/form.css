@@ -63,6 +63,8 @@ form, section {
     padding: .5em;
     grid-gap: .3em;
     border: dashed white;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .reg {
@@ -91,6 +93,8 @@ form, section {
     grid-area: regFormat;
     color: white;
     align-content: space-evenly;
+    margin-left: unset;
+    margin-right: unset;
 }
 
 .checkYes {

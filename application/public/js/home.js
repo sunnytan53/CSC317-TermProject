@@ -50,6 +50,6 @@ if (flashEle) {
             }
             opacity -= 0.05;
             flashEle.style.opacity = opacity;
-        }, 50);
+        }, 70);
     }, 2000)
 }

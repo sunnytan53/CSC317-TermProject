@@ -22,10 +22,8 @@
     <script>
         let ele = document.getElementById('logout');
         if (ele) {
-            ele.onclick = (even) => {
-                fetch('/users/logout', {
-                    method: "post"
-                })
+            ele.onclick = (event) => {
+                fetch('/users/logout', { method: "post" })
                     .then((data) => {
                         location.replace('/');
                     })
