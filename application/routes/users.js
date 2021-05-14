@@ -1,16 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../config/database');
-var { successPrint, errorPrint } = require('../helpers/debug/debugprinters');
-var UserError = require('../helpers/error/UserError');
-var bcrypt = require('bcrypt');
+const UserModel = require('../models/Users');
+const { successPrint, errorPrint } = require('../helpers/debug/debugprinters');
+const UserError = require('../helpers/error/UserError');
 
 router.post('/register', (req, res, next) => {
     let username = req.body.username;
     let email = req.body.email;
     let password = req.body.password;
     let cPassword = req.body.cPassword;
-
+    // Validate the data in the server side
     if (/[a-zA-Z]/.test(username.charAt(0))
         && username.replace(/[^a-zA-Z0-9]/).length >= 3
         && /\w@.+\w\.\w/.test(email)
@@ -20,39 +19,34 @@ router.post('/register', (req, res, next) => {
         && /[^\w]/.test(password)
         && password == cPassword
         && password.length != 0) {
-        // It will only execute when all conditions are met, or it will also output error
-        db.execute("select * from users where username=?", [username])
-            .then(([results, fields]) => {
-                if (results && results.length == 0) {
-                    return db.execute("select * from users where email=?", [email]);
+        UserModel.usernameExists(username)
+            .then((userExists) => {
+                if (userExists) {
+                    throw new UserError("User Error: username already exists", "/registration", 200)
                 } else {
-                    throw new UserError("User Error: registration failed, username already exists", "/registration", 200);
+                    return UserModel.emailExists(email)
                 }
             })
-            .then(([results, fields]) => {
-                if (results && results.length == 0) {
-                    return bcrypt.hash(password, 5);
+            .then((emailExists) => {
+                if (emailExists) {
+                    throw new UserError("User Error: email already exists", "/registration", 200)
                 } else {
-                    throw new UserError("User Error: registration failed, email already exists", "/registration", 200);
+                    return UserModel.create(username, password, email)
                 }
             })
-            .then((hPassword) => {
-                return db.execute("insert into users (username, email, password, created) values (?,?,?,now())",
-                    [username, email, hPassword]);
-            })
-            .then(([results, fields]) => {
-                if (results && results.affectedRows) {
-                    req.flash('success', 'User Account was created successfully!!!');
-                    successPrint("User was created!!!")
+            .then((createdId) => {
+                if (createdId < 0) {
+                    throw new UserError("Server Error: user could NOT be created", "/registration", 500)
+                } else {
+                    req.flash('success', 'User was created successfully!!!');
+                    successPrint("A new user was created!!!");
                     req.session.save((err) => {
                         res.redirect('/login');
                     });
-                } else {
-                    throw new UserError("Server Error: user could NOT be created", "/registration", 500);
                 }
             })
             .catch((err) => {
-                errorPrint("Registraction failed:");
+                errorPrint("Registraction failed: ");
                 if (err instanceof UserError) {
                     req.flash('error', err.getMessage());
                     errorPrint(err.getMessage());
@@ -66,8 +60,8 @@ router.post('/register', (req, res, next) => {
             })
     }
     else {
-        req.flash('error', 'User Error: the enetered information is NOT valid!\nPlease follow the instruction to enter valid information!');
-        errorPrint("User Error: the enetered information is NOT valid!\nPlease follow the instruction to enter valid information!");
+        req.flash('error', 'User Error: the enetered information is NOT valid!');
+        errorPrint("User Error: the enetered information is NOT valid!");
         res.status(200);
         req.session.save((err) => {
             res.redirect("/registration");
@@ -78,7 +72,7 @@ router.post('/register', (req, res, next) => {
 router.post('/login', (req, res, next) => {
     let username = req.body.username;
     let password = req.body.password;
-
+    // Validate the data in the server side
     if (/[a-zA-Z]/.test(username.charAt(0))
         && username.replace(/[^a-zA-Z0-9]/).length >= 3
         && password.length >= 8
@@ -86,19 +80,9 @@ router.post('/login', (req, res, next) => {
         && /[0-9]/.test(password)
         && /[^\w]/.test(password)
         && password.length != 0) {
-        // Validate the input again to make sure everything works fine
-        let userId;
-        db.execute("select id, username, password from users where username=?", [username])
-            .then(([results, fields]) => {
-                if (results && results.length == 1) {
-                    userId = results[0].id;
-                    return bcrypt.compare(password, results[0].password);
-                } else {
-                    throw new UserError("User error: Unmatched username!", "/login", 200)
-                }
-            })
-            .then((matched) => {
-                if (matched) {
+        UserModel.authenticate(username, password)
+            .then((userId) => {
+                if (userId > 0) {
                     req.flash('success', 'You are now LOGGED IN!');
                     successPrint(`User ${username} is logged in`);
                     req.session.username = username;
@@ -108,11 +92,11 @@ router.post('/login', (req, res, next) => {
                         res.redirect('/');
                     });
                 } else {
-                    throw new UserError("User error: Unmatched password!", "/login", 200)
+                    throw new UserError("User error: Unmatched username and password!", "/login", 200)
                 }
             })
             .catch((err) => {
-                errorPrint("User login failed:");
+                errorPrint("Login Failed:");
                 if (err instanceof UserError) {
                     req.flash('error', err.getMessage());
                     errorPrint(err.getMessage());
