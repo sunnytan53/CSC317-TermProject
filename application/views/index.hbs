@@ -1,4 +1,5 @@
-<form>
-    <!--<div class="title">There are <strong id="count"></strong> photos on this page...</div>
-    <div id="post"></div>-->
+<form id="card-content">
+    {{#each results}}
+    {{> card this}}
+    {{/each}}
 </form>

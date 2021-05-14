@@ -8,6 +8,7 @@
     padding: 1em;
     grid-gap: 1em;
     font-size: 1.5em;
+    font-family: 'Comic Sans MS';
 }
 
 header {
@@ -23,6 +24,7 @@ header {
     left: 50%;
     top: 25%;
     transform: translate(-50%,0);
+    z-index: 9999;
 }
 
     #flashmessage > div {
@@ -32,19 +34,18 @@ header {
 
 .alert {
     font-weight: bold;
+    border: solid;
 }
 
 .alert-error {
     background-color: palevioletred;
     color: red;
-    border: solid;
     border-color: red;
 }
 
 .alert-success {
     background-color: lightgreen;
     color: green;
-    border: solid;
     border-color: green;
 }
 
@@ -57,7 +58,7 @@ h3 {
     color: thistle;
 }
 
-form, section {
+form {
     grid-area: content;
     display: grid;
     padding: .5em;
@@ -78,15 +79,17 @@ form, section {
 .nav {
     grid-area: nav;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
     grid-gap: 2em;
 }
 
-    .nav > a {
+    .nav > a, .card-a, .reg-a {
         text-decoration: none;
         text-align: center;
-        color: white;
+        background-color: lightgray;
+        color: green;
         border: solid;
+        font-family: Lemon;
     }
 
 #regFormat {
@@ -128,7 +131,7 @@ form, section {
     padding-right: 2em;
 }
 
-.title {
+.title, .card-title {
     color: lightcoral;
     text-align: center;
     font-weight: bold;
@@ -138,26 +141,39 @@ form, section {
 img {
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    width: 100%;
 }
 
-#post {
+#card-content {
     display: grid;
     grid-template-columns: repeat(4, 2fr);
-    grid-auto-rows: 1fr;
+    grid-template-rows: repeat(2, 2fr);
+    margin-left: unset;
+    margin-right: unset;
+}
+
+.card {
+    padding: 0.5em;
+    text-align: center;
+}
+
+.card-body {
+    display: grid;
+    padding: 0.5em;
+}
+
+.card-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.card-description {
+    text-align: left;
     color: white;
 }
 
-.photo {
-    display: grid;
-    grid-template-rows: 1fr 3fr;
-    grid-template-columns: 1fr;
-    margin: 0.25em;
-    padding: 1em;
-    align-items: center;
-}
-
-[for] {
+[for], .reg-text {
     color: white;
     grid-column: 1;
     text-align: end;
@@ -170,6 +186,15 @@ input {
     input:hover {
         background-color: lightgreen;
     }
+
+#search-text {
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+#search-button {
+    font-size: 1em;
+}
 
 button {
     font-size: 1.5em;

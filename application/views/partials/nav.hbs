@@ -1,10 +1,21 @@
 <div class="nav">
     <a href="/">Home</a>
+    <input id="search-text" type="text">
+    <button id="search-button">Search</button>
     <a href="/postimage">Post Image</a>
-    <a href="/Imagepost">Image Post</a>
-    <a href="/registration">Register</a>
     {{#if logged}}
     <a id="logout" href="/users/logout">Log Out</a>
+    <script>
+        let ele = document.getElementById('logout');
+        if (ele) {
+            ele.onclick = (event) => {
+                fetch('/users/logout', { method: "post" })
+                    .then((data) => {
+                        location.replace('/');
+                    })
+            }
+        }
+    </script>
     {{else}}
     <a href="/login">Login</a>
     {{/if}}

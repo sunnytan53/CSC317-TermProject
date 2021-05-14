@@ -40,7 +40,9 @@ router.post('/createPost', uploader.single("image"), (req, res, next) => {
                 if (results && results.affectedRows) {
                     req.flash('success', 'Your post was created successfully!!!');
                     successPrint("Your post was created successfully!!!");
-                    res.redirect('/');
+                    req.session.save((err) => {
+                        res.redirect('/');
+                    });
                 } else {
                     throw new PostError('Post Error: post could NOT be create!', '/postImage', 200);
                 }
@@ -50,7 +52,9 @@ router.post('/createPost', uploader.single("image"), (req, res, next) => {
                     req.flash('error', err.getMessage());
                     errorPrint(err.getMessage());
                     res.status(err.getStatus());
-                    res.redirect(err.getRedirectURL());
+                    req.session.save((err) => {
+                        res.redirect(err.getRedirectURL());
+                    });
                 } else {
                     next(err);
                 }
@@ -74,7 +78,36 @@ router.post('/createPost', uploader.single("image"), (req, res, next) => {
         req.flash('error', errorMessage);
         errorPrint(errorMessage);
         res.status(200);
-        res.redirect("/postImage");
+        req.session.save((err) => {
+            res.redirect("/postImage");
+        });
+    }
+})
+
+router.get('/search', (req, res, next) => {
+    let searchTerm = req.query.search;
+    if (searchTerm) {
+        db.execute("select id, title, description, thumbnail, concat_ws(' ', title, description)\
+            as haystack from posts having haystack like ?", ["%" + searchTerm + "%"])
+            .then(([results, fields]) => {
+                if (results && results.length) {
+                    res.send({
+                        resultsStatus: "success",
+                        message: `${results.length} results found`,
+                        results: results
+                    });
+                } else {
+                    db.query('select id, title,  description, thumbnail, created from posts order by created desc limit 8')
+                        .then(([results, fileds]) => {
+                            res.send({
+                                resultsStatus: "error",
+                                message: "No results found. Here are the 8 recent posts.",
+                                results: results
+                            })
+                        });
+                }
+            })
+            .catch((err) => next(err))
     }
 })
 

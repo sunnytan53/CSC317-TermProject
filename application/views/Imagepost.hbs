@@ -1,9 +1,7 @@
-﻿<section class="post">
-    <div class="title">Title: <em>a title from somewhere</em></div>
-    <div>Author: <em>an anthor name from somewhere</em></div>
-    <div>Creation Time: <em>a time from the creation</em></div>
-    <div>Posted Image: <em>some descriptions</em></div>
-    <img src="https://fakeimg.pl/300/" />
-    <button type="submit">BACK</button>
-    <button type="submit">NEXT</button>
-</section>
+﻿<div class="post">
+    <div class="title">Title: <em>{{currentPost.title}}</em></div>
+    <div>Author: <em>{{currentPost.username}}</em></div>
+    <div>Creation Time: <em>{{currentPost.created}}</em></div>
+    <div>Description: <em>{{currentPost.description}}</em></div>
+    <img src="/{{currentPost.photopath}}" />
+</div>

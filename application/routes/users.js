@@ -44,7 +44,9 @@ router.post('/register', (req, res, next) => {
                 if (results && results.affectedRows) {
                     req.flash('success', 'User Account was created successfully!!!');
                     successPrint("User was created!!!")
-                    res.redirect('/login');
+                    req.session.save((err) => {
+                        res.redirect('/login');
+                    });
                 } else {
                     throw new UserError("Server Error: user could NOT be created", "/registration", 500);
                 }
@@ -55,7 +57,9 @@ router.post('/register', (req, res, next) => {
                     req.flash('error', err.getMessage());
                     errorPrint(err.getMessage());
                     res.status(err.getStatus());
-                    res.redirect(err.getRedirectURL());
+                    req.session.save((err) => {
+                        res.redirect(err.getRedirectURL());
+                    });
                 } else {
                     next(err);
                 }
@@ -65,7 +69,9 @@ router.post('/register', (req, res, next) => {
         req.flash('error', 'User Error: the enetered information is NOT valid!\nPlease follow the instruction to enter valid information!');
         errorPrint("User Error: the enetered information is NOT valid!\nPlease follow the instruction to enter valid information!");
         res.status(200);
-        res.redirect("/registration");
+        req.session.save((err) => {
+            res.redirect("/registration");
+        });
     }
 })
 
@@ -98,7 +104,9 @@ router.post('/login', (req, res, next) => {
                     req.session.username = username;
                     req.session.userId = userId;
                     res.locals.logged = true;
-                    res.redirect('/');
+                    req.session.save((err) => {
+                        res.redirect('/');
+                    });
                 } else {
                     throw new UserError("User error: Unmatched password!", "/login", 200)
                 }
@@ -109,7 +117,9 @@ router.post('/login', (req, res, next) => {
                     req.flash('error', err.getMessage());
                     errorPrint(err.getMessage());
                     res.status(err.getStatus());
-                    res.redirect(err.getRedirectURL());
+                    req.session.save((err) => {
+                        res.redirect(err.getRedirectURL());
+                    });
                 } else {
                     next(err);
                 }
@@ -118,7 +128,9 @@ router.post('/login', (req, res, next) => {
         req.flash('error', 'User Error: the enetered information is NOT valid!');
         errorPrint("User Error: the enetered information is NOT valid!");
         res.status(200);
-        res.redirect("/login");
+        req.session.save((err) => {
+            res.redirect("/login");
+        });
     }
 })
 
