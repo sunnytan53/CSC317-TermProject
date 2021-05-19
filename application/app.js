@@ -10,7 +10,7 @@ var flash = require('express-flash');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postsRouter = require('./routes/posts');
-var dbRouter = require('./routes/dbtest');
+var commentsRouter = require('./routes/comments');
 
 var errorPrint = require('./helpers/debug/debugprinters').errorPrint;
 var requestPrint = require('./helpers/debug/debugprinters').requestPrint;
@@ -65,7 +65,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
-app.use('/dbtest', dbRouter);
+app.use('/comments', commentsRouter);
 
 app.use((err, req, res, next) => {
     res.status(500);

@@ -1,7 +1,62 @@
 ﻿<div class="post">
-    <div class="title">Title: <em>{{currentPost.title}}</em></div>
-    <div>Author: <em>{{currentPost.username}}</em></div>
-    <div>Creation Time: <em>{{currentPost.created}}</em></div>
-    <div>Description: <em>{{currentPost.description}}</em></div>
-    <img src="/{{currentPost.photopath}}" />
+    <div>
+        <div>Author: <em>@{{currentPost.username}}</em></div>
+        <div>Created: <em>{{currentPost.created}}</em></div>
+        <img src="/{{currentPost.photopath}}" />
+    </div>
+    <div class="comment-body">
+        <div id="comment-input">
+            <textarea id="comment-text"></textarea>
+            <button id="comment-button">Comment</button>
+        </div>
+        <div id="comment-output">
+            {{#each currentPost.comments}}
+            {{> comment this}}
+            {{/each}}
+        </div>
+    </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('span[class=comment-created]').forEach((dateNode) => {
+            dateNode.textContent = new Date(dateNode.textContent).toLocaleString();
+        });
+    })
+
+    document.getElementById('comment-button').onclick = (event) => {
+        let commentText = document.getElementById('comment-text').value;
+        let postId = document.location.pathname.match(/\d+/g).map(Number)[0];
+
+        function addComment(data) {
+            let template = document.createElement('template');
+            template.innerHTML = `<div id="comment-id-${data.id}">
+                <strong class="comment-username">@${data.username}</strong>
+                <span class="comment-created">${new Date().toLocaleString()}</span>
+                <div class="comment-content">${data.comment}</div></div>`;
+            document.getElementById('comment-output').firstChild.before(template.content.firstChild);
+        }
+
+        if (commentText) {
+            let fetchOptions = {
+                method: "post",
+                headers: {
+                    "Content-Type": "Application/json"
+                },
+                body: JSON.stringify({
+                    comment: commentText,
+                    postId: postId
+                })
+            }
+            fetch('/comments/create', fetchOptions)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.code == 1) {
+                        addComment(data);
+                    }
+                    addFlash(data);
+                })
+                .catch((err) => console.log(err))
+        }
+    }
+</script>

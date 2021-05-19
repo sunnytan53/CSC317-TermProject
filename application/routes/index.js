@@ -1,10 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var isLoggedIn = require('../middleware/routeprotector').userIsLoggedIn;
-var getRecentPosts = require('../middleware/postsmiddleware').getRecentPosts;
-var db = require('../config/database');
+const { getRecentPosts, getPostById, getCommentsByPostId } = require('../middleware/postsmiddleware');
 
-/* GET home page. */
 router.get('/', getRecentPosts, (req, res, next) => {
     res.render('index',
         {
@@ -39,21 +37,13 @@ router.get('/postImage', isLoggedIn, (req, res, next) => {
         });
 });
 
-router.get('/post/:id(\\d+)', (req, res, next) => {
-    db.execute("select u.username, p.title, p.description, p.photopath, p.created \
-        from users u join posts p on u.id = fk_userid where p.id =? ", [req.params.id])
-        .then(([results, fields]) => {
-            if (results && results.length) {
-                res.render('imagepost', { currentPost: results[0] });
-            } else {
-                req.flash('error', 'There is no such post at this URL!');
-                res.redirect('/');
-            }
-        })
-});
+router.get('/post/:id(\\d+)', getPostById, getCommentsByPostId, (req, res, next) => {
+    res.render('imagepost',
+        {
+            title: `${res.locals.currentPost.title}`,
+            description: `${res.locals.currentPost.description}`
+        });
 
-router.get('/post', (req, res, next) => {
-    res.render('imagepost');
 });
 
 module.exports = router;

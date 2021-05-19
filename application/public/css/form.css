@@ -7,7 +7,7 @@
         "content";
     padding: 1em;
     grid-gap: 1em;
-    font-size: 1.5em;
+    font-size: 24px;
     font-family: 'Comic Sans MS';
 }
 
@@ -20,6 +20,8 @@ header {
 }
 
 #flashmessage {
+    font-size: 24px;
+    font-family: 'Comic Sans MS';
     position: fixed;
     left: 50%;
     top: 25%;
@@ -50,8 +52,8 @@ header {
 }
 
 h1 {
-    color: lightgray;
-    text-shadow: .2em .1em .1em gray;
+    color: lightcoral;
+    font-family: Lemon;
 }
 
 h3 {
@@ -79,7 +81,7 @@ form {
 .nav {
     grid-area: nav;
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr 1fr;
     grid-gap: 2em;
 }
 
@@ -125,13 +127,15 @@ form {
 }
 
 .post {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
     border: double white;
     color: white;
-    padding-left: 2em;
-    padding-right: 2em;
+    padding: 1em;
+    grid-gap: 1em;
 }
 
-.title, .card-title {
+.card-title {
     color: lightcoral;
     text-align: center;
     font-weight: bold;
@@ -139,6 +143,7 @@ form {
 }
 
 img {
+    margin-top: 1em;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
@@ -173,6 +178,47 @@ img {
     color: white;
 }
 
+.comment-body {
+    display: flex;
+    flex-flow: column;
+}
+
+#comment-input {
+    display: flex;
+    flex-flow: row;
+}
+
+#comment-output {
+    display: flex;
+    flex-flow: column;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    border: solid lightcoral;
+    max-height: 800px;
+}
+
+div[id^=comment-id-] {
+    display: grid;
+    grid-template-areas:
+        "username created"
+        "comment comment";
+}
+
+.comment-username {
+    grid-area: username;
+    justify-self: center;
+}
+
+.comment-created {
+    grid-area: created;
+    justify-self: end;
+}
+
+.comment-content {
+    grid-area: comment;
+}
+
+
 [for], .reg-text {
     color: white;
     grid-column: 1;
@@ -181,24 +227,34 @@ img {
 
 input {
     grid-column: 2;
+    font-size: 1em;
 }
 
     input:hover {
         background-color: lightgreen;
     }
 
-#search-text {
-    font-size: 1em;
-    box-sizing: border-box;
+#search-body {
+    display: flex;
+    flex-flow: row;
 }
 
-#search-button {
+#search-text, #comment-text {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#search-button, #comment-button {
     font-size: 1em;
 }
 
 button {
     font-size: 1.5em;
     font-weight: 900;
+}
+
+div > em, .comment-username, .comment-created {
+    color: lightgreen
 }
 
 [type=submit] {
@@ -217,6 +273,16 @@ button {
     [type=reset]:hover {
         background-color: darkred;
     }
+
+[type=checkbox] {
+    width: 1em;
+    height: 1em;
+}
+
+textarea {
+    resize: none;
+    font-size: 2.5em;
+}
 
 @media screen and (max-width: 500px) {
     .page-grid {

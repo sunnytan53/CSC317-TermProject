@@ -29,8 +29,7 @@ function executeSearch() {
                 cardContent.innerHTML = newInnerHTML;
 
                 if (data_json.message) {
-                    addFlash(data_json.message);
-                    console.log(data_json);
+                    addFlash(data_json);
                 }
             })
             .catch((err) => console.log(err))
@@ -47,14 +46,14 @@ function createCard(data) {
     </div></div>`;
 }
 
-function addFlash(message) {
+function addFlash(data) {
     let flashMessageDiv = document.createElement('div');
     let innerFlashDiv = document.createElement('div');
-    let innerTextNode = document.createTextNode(message);
+    let innerTextNode = document.createTextNode(data.message);
     innerFlashDiv.appendChild(innerTextNode);
     flashMessageDiv.appendChild(innerFlashDiv);
     flashMessageDiv.setAttribute('id', 'flashmessage');
-    innerFlashDiv.setAttribute('class', 'alert alert-success');
+    innerFlashDiv.setAttribute('class', `alert alert-${data.resultsStatus}`);
     document.getElementsByTagName('body')[0].appendChild(flashMessageDiv);;
     setFadeOut(flashMessageDiv);
 }

@@ -95,12 +95,12 @@ router.get('/search', async (req, res, next) => {
                     results: results
                 });
             } else {
-                let results = await getRecentPosts(8);
+                let results = await PostModel.getRecentPosts(8);
                 res.send({
                     resultsStatus: "error",
                     message: "No results found. Here are the 8 recent posts.",
                     results: results
-                })
+                });
             }
         }
     } catch (err) {

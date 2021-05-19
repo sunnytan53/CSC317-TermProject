@@ -8,7 +8,9 @@ routeProtector.userIsLoggedIn = (req, res, next) => {
     } else {
         errorPrint('user is NOT logged in');
         req.flash('error', 'You must be logged in to create a post!');
-        res.redirect('/login');
+        req.session.save((err) => {
+            res.redirect('/login');
+        })
     }
 }
 
