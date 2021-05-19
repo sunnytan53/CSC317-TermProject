@@ -43,7 +43,6 @@ router.get('/post/:id(\\d+)', getPostById, getCommentsByPostId, (req, res, next)
             title: `${res.locals.currentPost.title}`,
             description: `${res.locals.currentPost.description}`
         });
-
 });
 
 module.exports = router;
