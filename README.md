@@ -18,7 +18,8 @@ Please follow the instructions below and fill in the information requested when 
 
 # Build/Run Instructions
 
-The sql file is at config folder, and one with structure only, another one is with both data and structure.
+The sql file is in config folder, and one with structure only, another one is with both data and structure.
+Also, user and password provided in database.js in config folder may need to be altered.
 
 ## Build Instructions
 1. cd csc317-termproject-CiYuan53/application
