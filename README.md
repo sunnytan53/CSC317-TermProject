@@ -18,6 +18,8 @@ Please follow the instructions below and fill in the information requested when 
 
 # Build/Run Instructions
 
+The sql file is at config folder, and one with structure only, another one is with both data and structure.
+
 ## Build Instructions
 1. cd csc317-termproject-CiYuan53/application
 2. npm install
